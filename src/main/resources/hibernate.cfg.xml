@@ -17,9 +17,7 @@
 
     <!-- Mapeo de Entidades -->
     <mapping class="com.dicampus.j2ee.model.CancionEntity"/>
+    <mapping class="com.dicampus.j2ee.model.CantanteEntity"/>
     <mapping class="com.dicampus.j2ee.model.DescripcionEntity"/>
-    <mapping class="com.dicampus.j2ee.model.CancionEntity"/>
-<mapping class="com.dicampus.j2ee.model.DescripcionEntity"/>
-<mapping class="com.dicampus.j2ee.model.CantanteEntity"/>
   </session-factory>
 </hibernate-configuration>

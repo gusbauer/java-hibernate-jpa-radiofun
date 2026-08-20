@@ -76,8 +76,8 @@ public class CantanteEntity {
         this.isGroup = isGroup;
     }
 
-    // Mapeo One-To-Many apuntando a la propiedad 'cantante' en CancionEntity
-    @OneToMany(mappedBy = "cantante", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Mapeo One-To-Many apuntando a la propiedad 'autor' en CancionEntity
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<CancionEntity> getCanciones() {
         return canciones;
     }
@@ -89,6 +89,6 @@ public class CantanteEntity {
     // Método de conveniencia para añadir canciones
     public void addCancion(CancionEntity cancion) {
         canciones.add(cancion);
-        cancion.setCantante(this);
+        cancion.setAutor(this); // Cambiado setCantante por setAutor
     }
 }

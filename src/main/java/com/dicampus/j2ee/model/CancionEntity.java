@@ -22,8 +22,9 @@ public class CancionEntity {
     @Column(name = "titulo", nullable = false, length = 125)
     private String titulo;
 
-    @Column(name = "autor", nullable = false, length = 80)
-    private String autor;
+    @ManyToOne
+    @JoinColumn(name = "autor_id")
+    private CantanteEntity autor;
 
     @Column(name = "duración", nullable = false)
     private float duracion;
@@ -31,27 +32,20 @@ public class CancionEntity {
     @Column(name = "genero", nullable = false, length = 30)
     private String genero;
 
-    // Relación OneToOne con DescripcionEntity
     @OneToOne
     @JoinColumn(name = "descripcion_id")
     private DescripcionEntity descripcion;
 
-    // Relación ManyToOne con CantanteEntity
-    @ManyToOne
-    @JoinColumn(name = "cantante_id")
-    private CantanteEntity cantante;
-
     public CancionEntity() {}
 
-    // Getters y Setters
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 
     public String getTitulo() { return titulo; }
     public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public String getAutor() { return autor; }
-    public void setAutor(String autor) { this.autor = autor; }
+    public CantanteEntity getAutor() { return autor; }
+    public void setAutor(CantanteEntity autor) { this.autor = autor; }
 
     public float getDuracion() { return duracion; }
     public void setDuracion(float duracion) { this.duracion = duracion; }
@@ -61,7 +55,4 @@ public class CancionEntity {
 
     public DescripcionEntity getDescripcion() { return descripcion; }
     public void setDescripcion(DescripcionEntity descripcion) { this.descripcion = descripcion; }
-
-    public CantanteEntity getCantante() { return cantante; }
-    public void setCantante(CantanteEntity cantante) { this.cantante = cantante; }
 }
