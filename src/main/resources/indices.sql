@@ -1,0 +1,1 @@
+CREATE INDEX Prefijo_Nombre ON Product (Nombre(10));
