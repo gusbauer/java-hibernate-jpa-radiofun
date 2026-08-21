@@ -14,9 +14,11 @@
     <property name="hbm2ddl.auto">update</property>
     <property name="show_sql">true</property>
     <property name="format_sql">true</property>
+    <property name="hibernate.connection.provider_disables_autocommit">true</property>
 
     <!-- Mapeo de Entidades -->
     <mapping class="com.dicampus.j2ee.model.CancionEntity"/>
+    <mapping class="com.dicampus.j2ee.model.ListaReproduccionEntity"/>
     <mapping class="com.dicampus.j2ee.model.CantanteEntity"/>
     <mapping class="com.dicampus.j2ee.model.DescripcionEntity"/>
   </session-factory>
