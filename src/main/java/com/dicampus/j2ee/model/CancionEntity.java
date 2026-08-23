@@ -97,6 +97,8 @@ public class CancionEntity {
     
     @Override
     public String toString() {
-        return " Id :" + this.getId() + "\nTítulo:" + this.getTitulo();
+        return " Id :" + this.getId() 
+             + "\nTítulo:" + this.getTitulo()
+             + "\nDuración:" + this.getDuracion();
     }
 }
