@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import com.dicampus.j2ee.model.CancionEntity;
 import com.dicampus.j2ee.model.ListaReproduccionEntity;
+import java.util.ArrayList;
 
 import org.hibernate.Session;
 import org.junit.Assert;
@@ -140,14 +141,14 @@ public class RadioFunManagerTest {
 
             ListaReproduccionEntity listaCompleta = new ListaReproduccionEntity();
             listaCompleta.setNombre("lista Completa");
-            listaCompleta.setCanciones(new HashSet<>(ce));
+            listaCompleta.setCanciones(new ArrayList<>(ce));
 
             @SuppressWarnings("unchecked")
             List<CancionEntity> ceMejores = session.createQuery("FROM CancionEntity c WHERE c.descripcion.puntuacion > 7").list();
 
             ListaReproduccionEntity listaMejores = new ListaReproduccionEntity();
             listaMejores.setNombre("lista Mejores");
-            listaMejores.setCanciones(new HashSet<>(ceMejores));
+            listaMejores.setCanciones(new ArrayList<>(ceMejores));
 
             session.beginTransaction();
             session.save(listaCompleta);
