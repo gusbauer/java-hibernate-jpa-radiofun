@@ -1,35 +1,28 @@
 package com.dicampus.j2ee.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Cancion")
-public class CancionEntity {
+public class CancionEntity implements Comparable<CancionEntity> {
 
     private long id;
     private String titulo;
-    private CantanteEntity autor;
     private float duracion;
     private String genero;
+    private CantanteEntity autor;
     private DescripcionEntity descripcion;
-    private Set<ListaReproduccionEntity> listasReproduccion = new HashSet<>();
-
-    public CancionEntity() {}
 
     @Id
-    @Column(name = "cancion_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
@@ -39,7 +32,6 @@ public class CancionEntity {
         this.id = id;
     }
 
-    @Column(name = "titulo", nullable = false, length = 125)
     public String getTitulo() {
         return titulo;
     }
@@ -48,17 +40,6 @@ public class CancionEntity {
         this.titulo = titulo;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "autor_id")
-    public CantanteEntity getAutor() {
-        return autor;
-    }
-
-    public void setAutor(CantanteEntity autor) {
-        this.autor = autor;
-    }
-
-    @Column(name = "duracion", nullable = false)
     public float getDuracion() {
         return duracion;
     }
@@ -67,7 +48,6 @@ public class CancionEntity {
         this.duracion = duracion;
     }
 
-    @Column(name = "genero", nullable = false, length = 30)
     public String getGenero() {
         return genero;
     }
@@ -76,8 +56,16 @@ public class CancionEntity {
         this.genero = genero;
     }
 
-    @OneToOne
-    @JoinColumn(name = "descripcion_id")
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    public CantanteEntity getAutor() {
+        return autor;
+    }
+
+    public void setAutor(CantanteEntity autor) {
+        this.autor = autor;
+    }
+
+    @OneToOne(cascade = CascadeType.PERSIST)
     public DescripcionEntity getDescripcion() {
         return descripcion;
     }
@@ -86,19 +74,16 @@ public class CancionEntity {
         this.descripcion = descripcion;
     }
 
-    @ManyToMany(mappedBy = "canciones")
-    public Set<ListaReproduccionEntity> getListasReproduccion() {
-        return listasReproduccion;
+    @Override
+    public int compareTo(CancionEntity o) {
+        if (this.titulo == null || o == null || o.getTitulo() == null) {
+            return 0;
+        }
+        return getTitulo().compareTo(o.getTitulo());
     }
 
-    public void setListasReproduccion(Set<ListaReproduccionEntity> listasReproduccion) {
-        this.listasReproduccion = listasReproduccion;
-    }
-    
     @Override
     public String toString() {
-        return " Id :" + this.getId() 
-             + "\nTítulo:" + this.getTitulo()
-             + "\nDuración:" + this.getDuracion();
+        return " Id :" + id + "\nTítulo:" + titulo + "\nDuración:" + duracion;
     }
 }

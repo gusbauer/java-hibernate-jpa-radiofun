@@ -1,11 +1,10 @@
 package com.dicampus.j2ee;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.hibernate.Session;
 import org.junit.Assert;
@@ -141,22 +140,15 @@ public class RadioFunManagerTest {
             ListaReproduccionEntity listaCompleta = new ListaReproduccionEntity();
             listaCompleta.setNombre("lista Completa");
 
-            Map<String, CancionEntity> canciones = new HashMap<>();
-            for (int i = 0; i < ce.size(); i++) {
-                canciones.put(ce.get(i).getTitulo(), ce.get(i));
-            }
+            SortedSet<CancionEntity> canciones = new TreeSet<>(ce);
             listaCompleta.setCanciones(canciones);
 
-            // Corrección en HQL: 'puntuacion' sin tilde
             ce = session.createQuery("FROM CancionEntity c WHERE c.descripcion.puntuacion > 7", CancionEntity.class).list();
 
             ListaReproduccionEntity listaMejores = new ListaReproduccionEntity();
             listaMejores.setNombre("lista Mejores");
 
-            canciones = new HashMap<>();
-            for (int i = 0; i < ce.size(); i++) {
-                canciones.put(ce.get(i).getTitulo(), ce.get(i));
-            }
+            canciones = new TreeSet<>(ce);
             listaMejores.setCanciones(canciones);
 
             session.beginTransaction();
@@ -198,11 +190,38 @@ public class RadioFunManagerTest {
         }
     }
 
-    private void imprimirCancionesLista(Map<String, CancionEntity> set) {
+    @Test
+    public void CancionesOrdenaciónNatural() {
+        Session session = null;
+        try {
+            createPlayLists();
+
+            RadioFunManager manager = new RadioFunManager();
+            manager.setup();
+            session = manager.getSessionFactory().openSession();
+
+            // Obtenemos la primera lista de reproducción guardada
+            List<ListaReproduccionEntity> listas = session.createQuery("FROM ListaReproduccionEntity", ListaReproduccionEntity.class).list();
+            if (!listas.isEmpty()) {
+                ListaReproduccionEntity lista = listas.get(0);
+                imprimirCancionesLista(lista.getCanciones());
+            }
+
+            session.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail(e.getMessage());
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    private void imprimirCancionesLista(SortedSet<CancionEntity> set) {
         System.out.println("canciones almacenadas en set ::" + set.getClass());
-        Set<String> keys = set.keySet();
-        for (String key : keys) {
-            System.out.println("-------CancionEntity :\n" + set.get(key));
+        for (CancionEntity cancion : set) {
+            System.out.println("-------CancionEntity :\n" + cancion);
         }
     }
 }

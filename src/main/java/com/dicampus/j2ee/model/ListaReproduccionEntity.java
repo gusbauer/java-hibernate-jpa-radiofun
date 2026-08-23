@@ -1,7 +1,6 @@
-// me sogue dando error pasame el codigo complto
 package com.dicampus.j2ee.model;
 
-import java.util.Map;
+import java.util.SortedSet;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.MapKey;
 import javax.persistence.Table;
+import org.hibernate.annotations.SortNatural;
 
 @Entity
 @Table(name = "ListaReproduccion")
@@ -18,7 +17,7 @@ public class ListaReproduccionEntity {
 
     private long id;
     private String nombre;
-    private Map<String, CancionEntity> canciones;
+    private SortedSet<CancionEntity> canciones;
 
     @Id
     @Column(name = "id")
@@ -39,13 +38,13 @@ public class ListaReproduccionEntity {
         this.nombre = nombre;
     }
 
+    @SortNatural
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @MapKey(name = "titulo")
-    public Map<String, CancionEntity> getCanciones() {
+    public SortedSet<CancionEntity> getCanciones() {
         return canciones;
     }
 
-    public void setCanciones(Map<String, CancionEntity> canciones) {
+    public void setCanciones(SortedSet<CancionEntity> canciones) {
         this.canciones = canciones;
     }
 }
