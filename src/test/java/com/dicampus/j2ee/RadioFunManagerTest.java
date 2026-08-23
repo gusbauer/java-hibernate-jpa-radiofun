@@ -1,12 +1,11 @@
-// sale etso y me da error imprimirxancionesLista package com.dicampus.j2ee;
 package com.dicampus.j2ee;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.junit.Assert;
@@ -130,7 +129,6 @@ public class RadioFunManagerTest {
     @Test
     public void createPlayLists() {
         try {
-            // Creamos las listas de canciones previas
             VetustaMorlaCollectionCreateEntityTest();
             BillieEllishCollectionCreateEntityTest();
 
@@ -143,26 +141,24 @@ public class RadioFunManagerTest {
             ListaReproduccionEntity listaCompleta = new ListaReproduccionEntity();
             listaCompleta.setNombre("lista Completa");
 
-            ArrayList<CancionEntity> le = new ArrayList<>(ce);
+            Map<String, CancionEntity> canciones = new HashMap<>();
+            for (int i = 0; i < ce.size(); i++) {
+                canciones.put(ce.get(i).getTitulo(), ce.get(i));
+            }
+            listaCompleta.setCanciones(canciones);
 
-            // Ordenación por duración usando Comparator
-            le.sort(new Comparator<CancionEntity>() {
-                @Override
-                public int compare(CancionEntity o1, CancionEntity o2) {
-                    return Float.compare(o1.getDuracion(), o2.getDuracion());
-                }
-            });
-
-            listaCompleta.setCanciones(le);
-
-            // Corrección de puntuación sin tilde
+            // Corrección en HQL: 'puntuacion' sin tilde
             ce = session.createQuery("FROM CancionEntity c WHERE c.descripcion.puntuacion > 7", CancionEntity.class).list();
 
             ListaReproduccionEntity listaMejores = new ListaReproduccionEntity();
             listaMejores.setNombre("lista Mejores");
-            listaMejores.setCanciones(new ArrayList<>(ce));
 
-            // Guardamos en la base de datos
+            canciones = new HashMap<>();
+            for (int i = 0; i < ce.size(); i++) {
+                canciones.put(ce.get(i).getTitulo(), ce.get(i));
+            }
+            listaMejores.setCanciones(canciones);
+
             session.beginTransaction();
             session.save(listaCompleta);
             session.save(listaMejores);
@@ -174,13 +170,11 @@ public class RadioFunManagerTest {
             Assert.fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void CancionesListaReproduccionIterator() {
         Session session = null;
         try {
-            createPlayLists();
-
             RadioFunManager manager = new RadioFunManager();
             manager.setup();
             session = manager.getSessionFactory().openSession();
@@ -204,11 +198,11 @@ public class RadioFunManagerTest {
         }
     }
 
-    private void imprimirCancionesLista(Collection<CancionEntity> set) {
-        System.out.println("canciones almacenadas en set :: " + set.getClass());
-        for (Iterator<CancionEntity> iterator = set.iterator(); iterator.hasNext();) {
-            CancionEntity cancionEntity = iterator.next();
-            System.out.println("--------CancionEntity:\n" + cancionEntity);
+    private void imprimirCancionesLista(Map<String, CancionEntity> set) {
+        System.out.println("canciones almacenadas en set ::" + set.getClass());
+        Set<String> keys = set.keySet();
+        for (String key : keys) {
+            System.out.println("-------CancionEntity :\n" + set.get(key));
         }
     }
 }

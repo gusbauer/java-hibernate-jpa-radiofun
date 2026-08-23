@@ -1,17 +1,15 @@
-// me salen etso falires Failure Trace
+// me sogue dando error pasame el codigo complto
 package com.dicampus.j2ee.model;
 
-import java.util.List;
+import java.util.Map;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType; // Importación añadida
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OrderColumn;
+import javax.persistence.MapKey;
 import javax.persistence.Table;
 
 @Entity
@@ -20,9 +18,10 @@ public class ListaReproduccionEntity {
 
     private long id;
     private String nombre;
-    private List<CancionEntity> canciones;
+    private Map<String, CancionEntity> canciones;
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
@@ -40,18 +39,13 @@ public class ListaReproduccionEntity {
         this.nombre = nombre;
     }
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "ListaReproduccion_Cancion",
-        joinColumns = @JoinColumn(name = "listasReproduccion_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "canciones_cancion_id", referencedColumnName = "cancion_id")
-    )
-    @OrderColumn(name = "indice_orden")
-    public List<CancionEntity> getCanciones() {
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @MapKey(name = "titulo")
+    public Map<String, CancionEntity> getCanciones() {
         return canciones;
     }
 
-    public void setCanciones(List<CancionEntity> canciones) {
+    public void setCanciones(Map<String, CancionEntity> canciones) {
         this.canciones = canciones;
     }
 }
