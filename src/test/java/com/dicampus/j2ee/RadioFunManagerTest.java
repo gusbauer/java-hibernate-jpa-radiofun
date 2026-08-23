@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.dicampus.j2ee.model.CancionEntity;
+import com.dicampus.j2ee.model.CancionEntityComparatorByCantante;
 import com.dicampus.j2ee.model.CantanteEntity;
 import com.dicampus.j2ee.model.DescripcionEntity;
 import com.dicampus.j2ee.model.ListaReproduccionEntity;
@@ -140,7 +141,8 @@ public class RadioFunManagerTest {
             ListaReproduccionEntity listaCompleta = new ListaReproduccionEntity();
             listaCompleta.setNombre("lista Completa");
 
-            SortedSet<CancionEntity> canciones = new TreeSet<>(ce);
+            SortedSet<CancionEntity> canciones = new TreeSet<>(new CancionEntityComparatorByCantante());
+            canciones.addAll(ce);
             listaCompleta.setCanciones(canciones);
 
             ce = session.createQuery("FROM CancionEntity c WHERE c.descripcion.puntuacion > 7", CancionEntity.class).list();
@@ -148,7 +150,8 @@ public class RadioFunManagerTest {
             ListaReproduccionEntity listaMejores = new ListaReproduccionEntity();
             listaMejores.setNombre("lista Mejores");
 
-            canciones = new TreeSet<>(ce);
+            canciones = new TreeSet<>(new CancionEntityComparatorByCantante());
+            canciones.addAll(ce);
             listaMejores.setCanciones(canciones);
 
             session.beginTransaction();
@@ -191,7 +194,7 @@ public class RadioFunManagerTest {
     }
 
     @Test
-    public void CancionesOrdenaciónNatural() {
+    public void CancionesOrdenaciónComparator() {
         Session session = null;
         try {
             createPlayLists();
@@ -200,7 +203,6 @@ public class RadioFunManagerTest {
             manager.setup();
             session = manager.getSessionFactory().openSession();
 
-            // Obtenemos la primera lista de reproducción guardada
             List<ListaReproduccionEntity> listas = session.createQuery("FROM ListaReproduccionEntity", ListaReproduccionEntity.class).list();
             if (!listas.isEmpty()) {
                 ListaReproduccionEntity lista = listas.get(0);

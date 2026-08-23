@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.SortNatural;
+import org.hibernate.annotations.SortComparator;
 
 @Entity
 @Table(name = "ListaReproduccion")
@@ -38,7 +38,7 @@ public class ListaReproduccionEntity {
         this.nombre = nombre;
     }
 
-    @SortNatural
+    @SortComparator(CancionEntityComparatorByCantante.class)
     @ManyToMany(cascade = CascadeType.PERSIST)
     public SortedSet<CancionEntity> getCanciones() {
         return canciones;
