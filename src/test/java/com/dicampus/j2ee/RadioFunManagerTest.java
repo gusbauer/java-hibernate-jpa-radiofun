@@ -3,15 +3,17 @@ package com.dicampus.j2ee;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Collection;
+import java.util.Iterator;
+import com.dicampus.j2ee.model.CancionEntity;
+import com.dicampus.j2ee.model.ListaReproduccionEntity;
 
 import org.hibernate.Session;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.dicampus.j2ee.model.CancionEntity;
 import com.dicampus.j2ee.model.CantanteEntity;
 import com.dicampus.j2ee.model.DescripcionEntity;
-import com.dicampus.j2ee.model.ListaReproduccionEntity;
 
 public class RadioFunManagerTest {
 
@@ -158,6 +160,41 @@ public class RadioFunManagerTest {
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());
+        }
+    }
+    
+    @Test
+    public void CancionesListaReproduccionIterator() {
+        Session session = null;
+        try {
+            RadioFunManager manager = new RadioFunManager();
+            manager.setup();
+            session = manager.getSessionFactory().openSession();
+
+            List<ListaReproduccionEntity> listas = session.createQuery("FROM ListaReproduccionEntity", ListaReproduccionEntity.class).list();
+
+            for (Iterator<ListaReproduccionEntity> iterator = listas.iterator(); iterator.hasNext();) {
+                ListaReproduccionEntity listaReproduccionEntity = iterator.next();
+                System.out.println("*********************" + listaReproduccionEntity.getNombre() + "*****************");
+                imprimirCancionesLista(listaReproduccionEntity.getCanciones());
+            }
+
+            session.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail(e.getMessage());
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    private void imprimirCancionesLista(Collection<CancionEntity> set) {
+        System.out.println("canciones almacenadas en set ::" + set.getClass());
+        for (Iterator<CancionEntity> iterator = set.iterator(); iterator.hasNext();) {
+            CancionEntity cancionEntity = iterator.next();
+            System.out.println("--------CancionEntity:\n" + cancionEntity);
         }
     }
 }

@@ -94,4 +94,9 @@ public class CancionEntity {
     public void setListasReproduccion(Set<ListaReproduccionEntity> listasReproduccion) {
         this.listasReproduccion = listasReproduccion;
     }
+    
+    @Override
+    public String toString() {
+        return " Id :" + this.getId() + "\nTítulo:" + this.getTitulo();
+    }
 }
