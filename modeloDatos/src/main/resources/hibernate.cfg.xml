@@ -2,14 +2,22 @@
 <!DOCTYPE hibernate-configuration PUBLIC
   "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
   "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
 <hibernate-configuration>
     <session-factory>
+        <!-- Parametros de conexion JDBC -->
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://127.0.0.1:3306/radiofun?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</property>
+        
+        <!-- Fíjate en los &amp; en lugar de & sueltos -->
+        <property name="connection.url">jdbc:mysql://localhost:3306/RadioFun?useSSL=false&amp;serverTimezone=UTC</property>
+        
         <property name="connection.username">root</property>
         <property name="connection.password"></property>
-        <property name="hibernate.default_schema">radiofun</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+        <!-- Configuracion interna de Hibernate -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
         <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.default_schema">RadioFun</property>
     </session-factory>
 </hibernate-configuration>

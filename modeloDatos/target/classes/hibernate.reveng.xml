@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+	<schema-selection match-schema="RadioFun" />
+	<table-filter match-name="ASIGNATURA" />
+	<table-filter match-name="CURSO" />
+	<table-filter match-name="ENSENANZA" />
+</hibernate-reverse-engineering>

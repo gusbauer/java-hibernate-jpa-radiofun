@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 24 ago 2026, 14:07:38 by Hibernate Tools 5.4.33.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="radiofun" name="com.dicampus.j2ee.model.Curso" optimistic-lock="none" table="curso">
+        <id name="curId" type="java.lang.Long">
+            <column name="CUR_ID"/>
+            <generator class="identity"/>
+        </id>
+        <property name="curEnsId" type="long">
+            <column name="CUR_ENS_ID" not-null="true"/>
+        </property>
+        <property name="curNombre" type="string">
+            <column length="80" name="CUR_Nombre"/>
+        </property>
+    </class>
+</hibernate-mapping>
